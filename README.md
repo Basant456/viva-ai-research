@@ -21,7 +21,10 @@ Develop and evaluate an AI-supported assessment verification framework that gene
 
 ## Team Members
 - Basant Aryal
-- Prabina
+- Prabina Shrestha
 
+##Supervisor/Department Head of Mathematics and Computer Science
+-Selvarajah Mohanarajah
+  
 ## Status
 Research Initialization Phase
