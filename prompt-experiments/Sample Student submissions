@@ -1,0 +1,295 @@
+# Sample Student Submission for Prompt Engineering Experiments
+
+## Purpose
+
+This sample submission was created for experimentation and workflow testing related to the VIVA-AI project.
+
+The submission is being used to explore:
+- prompt engineering techniques
+- AI-generated verification quizzes
+- conceptual MCQ generation
+- educational AI workflows
+- LLM-based assessment systems
+
+---
+
+# Introduction to Python Programming Concepts
+
+**Student Name:** Season Lamichane  
+**Course:** CSC 4250 – Python Programming Course
+
+---
+
+## Question 1
+
+### Explain what variables are and discuss different data types in Python with examples.
+
+### Answer
+
+Variables are containers used to store information in a program. They help programmers save and reuse data during execution. Python supports different data types such as integers, floats, strings, and booleans.
+
+### Integer
+
+Whole numbers such as 5, 10, or 100.
+
+#### Example
+
+```python
+age = 20
+print(age)
+```
+
+#### Output
+
+```python
+20
+```
+
+---
+
+### Float
+
+Decimal numbers such as 3.14 or 9.5.
+
+#### Example
+
+```python
+price = 19.99
+print(price)
+```
+
+#### Output
+
+```python
+19.99
+```
+
+---
+
+### String
+
+Text values written inside quotation marks.
+
+#### Example
+
+```python
+name = "Alex"
+print(name)
+```
+
+#### Output
+
+```python
+Alex
+```
+
+---
+
+### Boolean
+
+Represents True or False values.
+
+#### Example
+
+```python
+is_student = True
+print(is_student)
+```
+
+#### Output
+
+```python
+True
+```
+
+---
+
+## Question 2
+
+### Explain the purpose of input() and print() functions with an example.
+
+### Answer
+
+The input() function is used to take information from the user, while the print() function is used to display information on the screen. User interaction is important because programs can respond differently depending on the information entered by users.
+
+#### Example
+
+```python
+name = input("Enter your name: ")
+age = input("Enter your age: ")
+
+print("Hello", name)
+print("You are", age, "years old.")
+```
+
+#### Output
+
+The program asks the user for their name and age and displays the information entered by the user.
+
+---
+
+## Question 3
+
+### Explain conditional statements in Python and provide an example.
+
+### Answer
+
+Conditional statements are used to make decisions in a program.
+
+- The if statement checks a condition.
+- The elif statement checks another condition if the first one is false.
+- The else statement runs when all conditions are false.
+
+#### Example
+
+```python
+marks = 75
+
+if marks >= 50:
+    print("Pass")
+else:
+    print("Fail")
+```
+
+#### Output
+
+Since the marks are greater than 50, the program prints `"Pass"`.
+
+---
+
+## Question 4
+
+### Explain loops in Python and discuss the difference between for loop and while loop.
+
+### Answer
+
+Loops are used to repeat tasks multiple times.
+
+A for loop is used when the number of repetitions is known, while a while loop continues running until a condition becomes false.
+
+### For Loop Example
+
+```python
+for i in range(1, 6):
+    print(i)
+```
+
+#### Output
+
+The program prints numbers from 1 to 5.
+
+---
+
+### While Loop Example
+
+```python
+count = 1
+
+while count <= 5:
+    print(count)
+    count += 1
+```
+
+#### Output
+
+The loop prints numbers from 1 to 5 until the condition becomes false.
+
+---
+
+## Question 5
+
+### What are functions in Python? Explain with an example.
+
+### Answer
+
+Functions are reusable blocks of code that perform a specific task. Functions help organize programs and reduce repeated code.
+
+Built-in functions are already available in Python, such as `print()`. User-defined functions are created by programmers.
+
+#### Example
+
+```python
+def add_numbers(a, b):
+    return a + b
+
+result = add_numbers(5, 3)
+print(result)
+```
+
+#### Output
+
+The function adds two numbers and returns the result. The output is `8`.
+
+---
+
+## Question 6
+
+### Explain lists and tuples in Python with examples.
+
+### Answer
+
+A list is a collection of items that can be changed after creation.
+
+#### Example
+
+```python
+students = ["Alex", "John", "Sarah"]
+print(students)
+```
+
+A tuple is similar to a list, but it cannot be changed after creation.
+
+#### Example
+
+```python
+colors = ("Red", "Blue", "Green")
+print(colors)
+```
+
+### Difference
+
+Lists are mutable (changeable), while tuples are immutable (not changeable).
+
+---
+
+## Question 7
+
+### Discuss some real-world applications of Python.
+
+### Answer
+
+Python is used in many real-world applications.
+
+### Web Development
+
+Python frameworks such as Django and Flask help developers create websites and web applications.
+
+### Artificial Intelligence
+
+Python is widely used in AI and machine learning because of libraries such as TensorFlow and PyTorch.
+
+### Data Science
+
+Python helps analyze and visualize data using libraries such as Pandas and Matplotlib.
+
+### Cybersecurity
+
+Python is used for automation, penetration testing, and vulnerability scanning.
+
+### Automation
+
+Python helps automate repetitive tasks such as file handling and report generation.
+
+---
+
+# Current Research Usage
+
+This sample submission is currently being used to test:
+- prompt engineering workflows
+- LLM-generated MCQs
+- conceptual verification quizzes
+- role prompting
+- few-shot prompting
+- educational AI workflow design
+
+within the VIVA-AI research project.
