@@ -27,3 +27,12 @@ Research papers, notes, and summaries related to AI-supported assessment verific
  LINK: https://research.manchester.ac.uk/en/publications/contra-generative-ai-detection-in-higher-education-assessments-2/?utm_source
 
 This study explores the use of oral assessments as a method for strengthening academic integrity and evaluating student understanding in data analytics education. The findings suggest that oral assessments provide instructors with a more direct and reliable way to determine whether students genuinely understand their submitted work. Students also reported that the process encouraged deeper learning and preparation. However, the study identifies a major limitation: oral assessments require significant instructor time and effort, making them difficult to implement in large classes. The authors conclude that while oral assessments are effective for verifying learning, scalability remains a challenge. This limitation provides a strong justification for VIVA-AI, which aims to capture many of the verification benefits of oral assessments while using AI-generated quizzes and Canvas automation to make the process practical for larger courses.
+
+
+PAPER-4
+
+Can you spot the bot? Identifying AI-generated writing in college essays
+
+LINK: https://link.springer.com/article/10.1007/s40979-024-00158-3?utm_source
+
+This study investigates whether humans can accurately distinguish between AI-generated and student-written essays in higher education settings. The findings reveal that identifying AI-generated writing is significantly more difficult than many educators expect. Participants frequently misclassified both human-written and AI-generated essays, demonstrating the limitations of human judgment when evaluating the authenticity of written work. The study suggests that as generative AI continues to improve, distinguishing AI-assisted work from original student work will become increasingly unreliable. The authors conclude that educational institutions should be cautious about relying on detection-based approaches and instead consider alternative assessment methods that directly measure student understanding and learning. These findings support the rationale behind VIVA-AI, which focuses on verifying student knowledge through personalized post-submission assessments rather than attempting to determine whether AI was used during the completion of an assignment.
