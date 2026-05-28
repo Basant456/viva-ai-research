@@ -27,7 +27,9 @@ Simple understanding:
 VIVA AI workflow:
 
 Student submits assignment
+
         ↓
+        
 Canvas stores submission
         ↓
 VIVA-AI retrieves submission
