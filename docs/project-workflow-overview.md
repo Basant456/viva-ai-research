@@ -23,6 +23,22 @@ Simple understanding:
 5. Generate verification quiz questions
 6. Potentially connect quizzes back into Canvas LMS
 
+
+VIVA AI workflow:
+
+Student submits assignment
+        ↓
+Canvas stores submission
+        ↓
+VIVA-AI retrieves submission
+        ↓
+LLM generates verification questions
+        ↓
+Canvas API creates quiz
+        ↓
+Student completes quiz
+        ↓
+Instructor reviews results
 ---
 
 ## APIs Explored So Far
