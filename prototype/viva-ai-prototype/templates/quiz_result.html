@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Verification Quiz Result</h1>
+    <p>Student conceptual understanding review.</p>
+</div>
+
+<div class="main-container">
+    <div class="card">
+        <h2>Score: {{ score }} / {{ total }}</h2>
+
+        {% for r in results %}
+            <div class="quiz-question">
+                <h3>Question {{ loop.index }}</h3>
+                <p>{{ r.question }}</p>
+
+                <p><strong>Selected Answer:</strong> {{ r.selected_answer }}</p>
+                <p><strong>Correct Answer:</strong> {{ r.correct_answer }}</p>
+
+                {% if r.is_correct %}
+                    <p class="success-note">Correct</p>
+                {% else %}
+                    <p class="warning-note">Incorrect</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <a class="button-link" href="/">Back to Dashboard</a>
+    </div>
+</div>
+
+</body>
+</html>
