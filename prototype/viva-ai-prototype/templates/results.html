@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Verification Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="page-header">
+    <div class="header-badge">
+        Conceptual Verification
+    </div>
+
+    <h1>Verification Results</h1>
+
+    <p>
+        Review the student's answers and explanations.
+    </p>
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Quiz Score: {{ score }} / {{ total }}</h2>
+    </div>
+
+    {% for result in results %}
+        <div class="quiz-question">
+            <h3>Question {{ loop.index }}</h3>
+
+            <p>{{ result.question }}</p>
+
+            <p>
+                <strong>Selected:</strong>
+                {{ result.selected or "No answer selected" }}
+            </p>
+
+            <p>
+                <strong>Correct Answer:</strong>
+                {{ result.correct }}
+            </p>
+
+            <p>
+                <strong>Result:</strong>
+                {% if result.is_correct %}
+                    Correct
+                {% else %}
+                    Incorrect
+                {% endif %}
+            </p>
+
+            <p>
+                <strong>Explanation:</strong>
+                {{ result.explanation }}
+            </p>
+        </div>
+    {% endfor %}
+
+    <a href="{{ url_for('index') }}" class="button-link">
+        Analyze Another Submission
+    </a>
+
+</div>
+
+</body>
+
+</html>
