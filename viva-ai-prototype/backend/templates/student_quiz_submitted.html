@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VIVA-AI Student MCQ Submitted</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f5f7;
+      color: #1f2933;
+    }
+    main { max-width: 860px; margin: 0 auto; padding: 28px 20px; }
+    .response {
+      background: #ffffff;
+      border: 1px solid #d8dee6;
+      border-radius: 8px;
+      padding: 18px;
+      margin-top: 16px;
+    }
+    h1, h2 { margin-top: 0; }
+    a {
+      color: #0f5ca8;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .note {
+      background: #ffffff;
+      border: 1px solid #d8dee6;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 14px 0;
+    }
+    .correct { color: #146c2e; font-weight: 700; }
+    .incorrect { color: #b42318; font-weight: 700; }
+  </style>
+</head>
+<body>
+<main>
+  <p><a href="{{ url_for('student_quiz', submission_id=submission.submissionID) }}">Back to student quiz</a></p>
+  <h1>Answers Submitted</h1>
+  <p>{{ submission.prefix }} {{ submission.code }} / {{ submission.bannerID }}{% if submission.studentName %} - {{ submission.studentName }}{% endif %} / {{ submission.assignmentName }}</p>
+  <div class="note">Submitted answers are shown with the correct answer and explanation for review.</div>
+
+  {% for response in responses %}
+    <section class="response">
+      <h2>{{ loop.index }}. {{ response.question }}</h2>
+      <p><strong>Selected answer:</strong> {{ response.selected }}</p>
+      <p>
+        <strong>Result:</strong>
+        {% if response.is_correct %}
+          <span class="correct">Correct</span>
+        {% else %}
+          <span class="incorrect">Needs review</span>
+        {% endif %}
+      </p>
+      <p><strong>Correct answer:</strong> {{ response.answer }}</p>
+      <p><strong>Explanation:</strong> {{ response.explanation }}</p>
+      {% if response.concept %}
+        <p><strong>Concept:</strong> {{ response.concept }}</p>
+      {% endif %}
+    </section>
+  {% endfor %}
+</main>
+</body>
+</html>

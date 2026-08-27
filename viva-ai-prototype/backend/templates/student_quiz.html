@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VIVA-AI Student MCQ Preview</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f5f7;
+      color: #1f2933;
+    }
+    main { max-width: 860px; margin: 0 auto; padding: 28px 20px; }
+    .question {
+      background: #ffffff;
+      border: 1px solid #d8dee6;
+      border-radius: 8px;
+      padding: 18px;
+      margin-top: 16px;
+    }
+    h1, h2 { margin-top: 0; }
+    .option {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 10px 0;
+      line-height: 1.45;
+      cursor: pointer;
+    }
+    .option input { margin-top: 3px; }
+    a {
+      color: #0f5ca8;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .note {
+      background: #ffffff;
+      border: 1px solid #d8dee6;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 14px 0;
+    }
+    button {
+      border: 0;
+      background: #0f5ca8;
+      color: #ffffff;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <p><a href="{{ url_for('quiz', submission_id=submission.submissionID) }}">Back to instructor review</a></p>
+  <h1>Student MCQ Preview</h1>
+  <p>{{ submission.prefix }} {{ submission.code }} / {{ submission.bannerID }}{% if submission.studentName %} - {{ submission.studentName }}{% endif %} / {{ submission.assignmentName }}</p>
+  <div class="note">This preview lets the student choose answers, but it hides the answer key and concept notes.</div>
+
+  {% if mcq.questions %}
+    <form method="post">
+      {% for question in mcq.questions %}
+        {% set question_index = loop.index0 %}
+        <section class="question">
+          <h2>{{ loop.index }}. {{ question.question }}</h2>
+          {% for option in question.options %}
+            <label class="option">
+              <input type="radio" name="question_{{ question_index }}" value="{{ option }}" required>
+              <span>{{ option }}</span>
+            </label>
+          {% endfor %}
+        </section>
+      {% endfor %}
+      <button type="submit">Submit Answers</button>
+    </form>
+  {% else %}
+    <p>No MCQs have been generated for this submission yet.</p>
+  {% endif %}
+</main>
+</body>
+</html>

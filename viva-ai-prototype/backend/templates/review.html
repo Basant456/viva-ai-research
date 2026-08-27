@@ -1,0 +1,139 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VIVA-AI AI Analysis</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f5f7;
+      color: #1f2933;
+    }
+    main { max-width: 980px; margin: 0 auto; padding: 28px 20px; }
+    .panel {
+      background: #ffffff;
+      border: 1px solid #d8dee6;
+      border-radius: 8px;
+      padding: 18px;
+      margin-top: 16px;
+    }
+    h1, h2 { margin-top: 0; }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(140px, 1fr));
+      gap: 12px;
+    }
+    .meta div {
+      background: #fbfcfd;
+      border: 1px solid #e1e7ef;
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .label { display: block; color: #5f6b7a; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    a {
+      color: #0f5ca8;
+      font-weight: 700;
+      text-decoration: none;
+      font: inherit;
+    }
+    .button {
+      border: 0;
+      background: #38546b;
+      color: #ffffff;
+      border-radius: 6px;
+      padding: 9px 12px;
+      cursor: pointer;
+      display: inline-flex;
+    }
+    li { margin: 8px 0; line-height: 1.45; }
+    @media (max-width: 760px) { .meta { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<main>
+  <p><a href="{{ url_for('index') }}">Back to dashboard</a></p>
+  <div class="review-header">
+    <h1>AI Analysis</h1>
+    <form method="post" action="{{ url_for('analyze_submission', submission_id=submission.submissionID) }}">
+      <button class="button" type="submit">Re-run Analysis</button>
+    </form>
+  </div>
+
+  <section class="panel meta">
+    <div><span class="label">Course</span>{{ submission.prefix }} {{ submission.code }}</div>
+    <div><span class="label">Student</span>{{ submission.bannerID }}{% if submission.studentName %}<br>{{ submission.studentName }}{% endif %}</div>
+    <div><span class="label">Assignment</span>{{ submission.assignmentName }}</div>
+    <div><span class="label">Review Status</span>{{ review_status or "Not Analyzed" }}</div>
+  </section>
+
+  <section class="panel">
+    <h2>AI-Risk Analysis</h2>
+    {% if analysis %}
+      <p><strong>{{ analysis.risk_level }}</strong>: {{ analysis.summary }}</p>
+      <p>{{ analysis.explanation }}</p>
+
+      <h3>Evidence</h3>
+      <ul>
+        {% for item in analysis.evidence or [] %}
+          <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+
+      <h3>Concerns</h3>
+      <ul>
+        {% for item in analysis.concerns or [] %}
+          <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+
+      <h3>Recommended Follow-Up</h3>
+      <ul>
+        {% for item in analysis.recommended_follow_up or [] %}
+          <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No analysis has been generated yet.</p>
+    {% endif %}
+  </section>
+
+  <section class="panel">
+    <h2>Verification MCQs</h2>
+    <div class="actions">
+      <form method="post" action="{{ url_for('generate_mcq', submission_id=submission.submissionID) }}">
+        <button class="button" type="submit">Generate MCQs</button>
+      </form>
+      <a class="button" href="{{ url_for('quiz', submission_id=submission.submissionID) }}">Instructor MCQ Review</a>
+      <a class="button" href="{{ url_for('student_quiz', submission_id=submission.submissionID) }}">Student Preview</a>
+      <a class="button" href="{{ url_for('download_canvas_mcq', submission_id=submission.submissionID) }}">Download Canvas-Compatible File</a>
+    </div>
+    {% if mcq.questions %}
+      {% for question in mcq.questions %}
+        <h3>{{ loop.index }}. {{ question.question }}</h3>
+        <ul>
+          {% for option in question.options %}
+            <li>{{ option }}</li>
+          {% endfor %}
+        </ul>
+        <p><strong>Answer:</strong> {{ question.answer }}</p>
+        <p><strong>Explanation:</strong> {{ question.explanation or question.concept }}</p>
+        <p><strong>Concept:</strong> {{ question.concept }}</p>
+      {% endfor %}
+    {% else %}
+      <p>No MCQs have been generated yet. Use Generate MCQs whenever the instructor wants verification questions.</p>
+    {% endif %}
+  </section>
+</main>
+</body>
+</html>
+

@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VIVA-AI Local Dashboard</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #142033;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid #d9e1ea;
+      padding: 20px 28px;
+    }
+    main { max-width: 1180px; margin: 0 auto; padding: 24px; }
+    h1 { margin: 0 0 4px; font-size: 25px; }
+    h2 { margin: 0 0 14px; font-size: 19px; }
+    h3 { margin: 0 0 10px; font-size: 16px; }
+    p { line-height: 1.45; }
+    .muted { color: #5d6978; font-size: 14px; }
+    .header-row {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+    }
+    .top-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .metric, .panel, .step {
+      background: #ffffff;
+      border: 1px solid #d9e1ea;
+      border-radius: 8px;
+    }
+    .metric { padding: 13px 15px; }
+    .metric strong { display: block; font-size: 24px; margin-top: 3px; }
+    .panel { padding: 18px; margin-bottom: 18px; }
+    .library {
+      display: grid;
+      gap: 10px;
+    }
+    details {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: #fbfcfd;
+      padding: 10px 12px;
+    }
+    details details { margin-top: 8px; background: #ffffff; }
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      list-style-position: inside;
+    }
+    .library-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 6px 0 0 22px;
+    }
+    .library-list {
+      margin: 8px 0 0 22px;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+    .library-item {
+      border-left: 3px solid #d8e2ee;
+      padding-left: 10px;
+      color: #26384d;
+    }
+    .file-downloads {
+      display: grid;
+      gap: 5px;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+    .file-downloads a {
+      color: #0f5ca8;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .file-downloads a:hover { text-decoration: underline; }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .step { padding: 16px; }
+    .step-number {
+      display: inline-flex;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      background: #0f5ca8;
+      color: #ffffff;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    form { display: grid; gap: 11px; }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(120px, 1fr));
+      gap: 10px;
+    }
+    label { display: grid; gap: 5px; font-size: 13px; font-weight: 700; }
+    input, select, textarea, button {
+      font: inherit;
+      border-radius: 6px;
+      border: 1px solid #b8c4d2;
+      padding: 9px 10px;
+      min-width: 0;
+    }
+    textarea { min-height: 68px; resize: vertical; }
+    button, .button {
+      border: 0;
+      background: #0f5ca8;
+      color: #ffffff;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 6px;
+      padding: 9px 12px;
+      cursor: pointer;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 38px;
+      white-space: nowrap;
+    }
+    button.secondary, .button.secondary { background: #38546b; }
+    button.danger, .button.danger { background: #b42318; }
+    button.placeholder { background: #6b7785; }
+    .inline-form { display: inline-flex; }
+    .rename-form,
+    .actions form.rename-form {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .rename-form.open,
+    .actions form.rename-form.open {
+      display: inline-flex;
+    }
+    .rename-form input {
+      min-height: 30px;
+      padding: 6px 9px;
+      width: min(320px, 100%);
+    }
+    .small-button {
+      min-height: 30px;
+      padding: 6px 9px;
+      font-size: 13px;
+    }
+    .split {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.8fr) minmax(320px, 1.2fr);
+      gap: 16px;
+    }
+    table { width: 100%; border-collapse: collapse; background: #ffffff; }
+    th, td {
+      border-bottom: 1px solid #e5eaf0;
+      padding: 11px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: #5d6978;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+    .status {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #eef2f6;
+      color: #344054;
+    }
+    .status.verify { background: #fff4d6; color: #8a5600; }
+    .status.done { background: #e7f7ec; color: #146c2e; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .actions form { display: inline; }
+    .messages { padding: 0; margin: 0 0 18px; list-style: none; }
+    .messages li {
+      background: #fff8e6;
+      border: 1px solid #f2d28b;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+    }
+    @media (max-width: 900px) {
+      .header-row { align-items: flex-start; flex-direction: column; }
+      .summary, .steps, .split, .form-grid { grid-template-columns: 1fr; }
+      table { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-row">
+    <div>
+      <h1>VIVA-AI Local Dashboard</h1>
+      <div class="muted">Create subjects once, add sections and students, then store each student's assignments locally.</div>
+    </div>
+    <div class="top-actions">
+      <form method="post" action="{{ url_for('sync_local_files') }}">
+        <button class="placeholder" type="submit">Sync Local Files</button>
+      </form>
+      <form method="post" action="{{ url_for('retrieve_from_canvas') }}">
+        <button class="placeholder" type="submit">Retrieve from Canvas</button>
+      </form>
+    </div>
+  </div>
+</header>
+
+<main>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <section class="summary" aria-label="summary">
+    <div class="metric"><span class="muted">Subjects</span><strong>{{ courses|length }}</strong></div>
+    <div class="metric"><span class="muted">Sections</span><strong>{{ sections|length }}</strong></div>
+    <div class="metric"><span class="muted">Assignments</span><strong>{{ assignments|length }}</strong></div>
+    <div class="metric"><span class="muted">Submissions</span><strong>{{ submissions|length }}</strong></div>
+  </section>
+
+  <section class="panel">
+    <h2>Subject Library</h2>
+    <p class="muted">Browse the local structure by subject, section, student, and submitted assignments.</p>
+    {% if library %}
+      <div class="library">
+        {% for course in library %}
+          <details open>
+            <summary>{{ course.prefix }} {{ course.code }} - {{ course.name }}</summary>
+            <div class="library-row">
+              <span></span>
+              <form class="inline-form" method="post" action="{{ url_for('delete_subject', course_id=course.courseID) }}" onsubmit="return confirm('Remove this subject, its sections, students in those sections, assignments, and saved files?');">
+                <button class="danger small-button" type="submit">Remove Subject</button>
+              </form>
+            </div>
+            {% if course.sections %}
+              {% for section in course.sections %}
+                <details open>
+                  <summary>Section {{ section.secNo }}</summary>
+                  <div class="library-row">
+                    <span></span>
+                    <form class="inline-form" method="post" action="{{ url_for('delete_section', sec_id=section.secID) }}" onsubmit="return confirm('Remove this section, its students, assignments, submissions, and saved files?');">
+                      <button class="danger small-button" type="submit">Remove Section</button>
+                    </form>
+                  </div>
+                  {% if section.assignments %}
+                    {% for assignment in section.assignments %}
+                      <details open>
+                        <summary>Assignment: {{ assignment.name }}</summary>
+                        <div class="library-row">
+                          <div class="actions">
+                            <button class="secondary small-button rename-toggle" type="button">Rename</button>
+                            <form class="rename-form" method="post" action="{{ url_for('rename_assignment', assignment_id=assignment.assignmentID) }}">
+                              <input name="new_name" value="{{ assignment.name }}" aria-label="Assignment name" required>
+                              <button class="secondary small-button" type="submit">Save Name</button>
+                            </form>
+                          </div>
+                          <form class="inline-form" method="post" action="{{ url_for('delete_assignment', assignment_id=assignment.assignmentID) }}" onsubmit="return confirm('Remove this assignment and any saved submissions for it?');">
+                            <button class="danger small-button" type="submit">Remove Assignment</button>
+                          </form>
+                        </div>
+
+                        {% if assignment.students %}
+                          {% for student in assignment.students %}
+                            <details>
+                              <summary>Student {{ student.bannerID }}{% if student.studentName %} - {{ student.studentName }}{% endif %}</summary>
+                              <div class="library-row">
+                                <span></span>
+                                <form class="inline-form" method="post" action="{{ url_for('delete_student', sec_id=section.secID, stu_id=student.stuID) }}" onsubmit="return confirm('Remove this student from this section and remove their saved submissions here?');">
+                                  <button class="danger small-button" type="submit">Remove Student</button>
+                                </form>
+                              </div>
+                              {% if student.submission %}
+                                <ul class="library-list">
+                                  <li class="library-item">
+                                    <strong>Assignment Name:</strong> {{ assignment.name }} / {{ student.submission.status }}
+                                    <div class="file-downloads">
+                                      <div>
+                                        <strong>Download Questions:</strong>
+                                        <a href="{{ url_for('download_saved_file', submission_id=student.submission.submissionID, file_kind='assignment') }}">{{ (student.submission.assignmentOriginalName or student.submission.assignmentFile or 'assignment_questions') | replace('\\', '/') | basename }} &darr;</a>
+                                      </div>
+                                      <div>
+                                        <strong>Download Submission:</strong>
+                                        <a href="{{ url_for('download_saved_file', submission_id=student.submission.submissionID, file_kind='submission') }}">{{ (student.submission.submissionOriginalName or student.submission.subFile or 'student_submission') | replace('\\', '/') | basename }} &darr;</a>
+                                      </div>
+                                    </div>
+                                    <div class="actions" style="margin-top: 8px;">
+                                      <form method="post" action="{{ url_for('analyze_submission', submission_id=student.submission.submissionID) }}">
+                                        <button type="submit">Analyze</button>
+                                      </form>
+                                      <a class="button secondary" href="{{ url_for('review', submission_id=student.submission.submissionID) }}">AI Analysis</a>
+                                      <form method="post" action="{{ url_for('generate_mcq', submission_id=student.submission.submissionID) }}">
+                                        <button class="secondary" type="submit">Generate MCQs</button>
+                                      </form>
+                                      <a class="button secondary" href="{{ url_for('student_quiz', submission_id=student.submission.submissionID) }}">Student Preview</a>
+                                      <form method="post" action="{{ url_for('delete_submission', submission_id=student.submission.submissionID) }}" onsubmit="return confirm('Remove this uploaded submission and its saved files?');">
+                                        <button class="danger" type="submit">Remove Submission</button>
+                                      </form>
+                                    </div>
+                                  </li>
+                                </ul>
+                              {% else %}
+                                <div class="library-row muted">No submission uploaded for this assignment.</div>
+                              {% endif %}
+                            </details>
+                          {% endfor %}
+                        {% else %}
+                          <div class="library-row muted">No students added to this section yet.</div>
+                        {% endif %}
+                      </details>
+                    {% endfor %}
+                  {% else %}
+                    <div class="library-row muted">No assignments saved for this section yet.</div>
+                    {% if section.students %}
+                      {% for student in section.students %}
+                        <details>
+                          <summary>Student {{ student.bannerID }}{% if student.studentName %} - {{ student.studentName }}{% endif %}</summary>
+                          <div class="library-row">
+                            <span class="muted">No assignment saved for this student yet.</span>
+                            <form class="inline-form" method="post" action="{{ url_for('delete_student', sec_id=section.secID, stu_id=student.stuID) }}" onsubmit="return confirm('Remove this student from this section?');">
+                              <button class="danger small-button" type="submit">Remove Student</button>
+                            </form>
+                          </div>
+                        </details>
+                      {% endfor %}
+                    {% endif %}
+                  {% endif %}
+                </details>
+              {% endfor %}
+            {% else %}
+              <div class="library-row muted">No sections saved for this course yet.</div>
+            {% endif %}
+          </details>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="muted">No courses yet. Save a course to start the library.</p>
+    {% endif %}
+  </section>
+
+  <section class="panel">
+    <h2>Setup</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="step-number">1</span>
+        <h3>Subject</h3>
+        <form method="post" action="{{ url_for('create_course') }}">
+          <div class="form-grid">
+            <label>Prefix<input name="prefix" placeholder="CSC" required></label>
+            <label>Code<input name="code" placeholder="3800" required></label>
+          </div>
+          <label>Subject name<input name="name" placeholder="Web Programming" required></label>
+          <button type="submit">Save Subject</button>
+        </form>
+      </div>
+
+      <div class="step">
+        <span class="step-number">2</span>
+        <h3>Section and Student</h3>
+        <form method="post" action="{{ url_for('create_section') }}">
+          <label>Subject
+            <select id="student-course-select" name="course_id" required>
+              <option value="">Select course</option>
+              {% for course in courses %}
+                <option value="{{ course.courseID }}" {% if selected_course_id == course.courseID %}selected{% endif %}>{{ course.prefix }} {{ course.code }} - {{ course.name }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <label>Section number<input name="sec_no" placeholder="01" required></label>
+          <button type="submit">Save Section</button>
+        </form>
+        <form method="post" action="{{ url_for('add_student') }}">
+          <label>Section
+            <select id="student-section-select" name="sec_id" required>
+              <option value="">Select section</option>
+              {% for section in sections %}
+                <option value="{{ section.secID }}" data-course-id="{{ section.courseID }}" {% if selected_section_id == section.secID %}selected{% endif %}>{{ section.prefix }} {{ section.code }} - {{ section.secNo }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <div class="form-grid">
+            <label>Banner ID<input name="banner_id" placeholder="900123456" required></label>
+            <label>Student name<input name="student_name" placeholder="Student name"></label>
+          </div>
+          <button class="secondary" type="submit">Add Student</button>
+        </form>
+      </div>
+
+      <div class="step">
+        <span class="step-number">3</span>
+        <h3>Assignment</h3>
+        <form method="post" action="{{ url_for('create_assignment') }}" enctype="multipart/form-data">
+          <label>Subject
+            <select id="assignment-course-select" name="course_id" required>
+              <option value="">Select course</option>
+              {% for course in courses %}
+                <option value="{{ course.courseID }}" {% if selected_course_id == course.courseID %}selected{% endif %}>{{ course.prefix }} {{ course.code }} - {{ course.name }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <label>Section
+            <select id="assignment-section-select" name="sec_id">
+              <option value="">Any section</option>
+              {% for section in sections %}
+                <option value="{{ section.secID }}" data-course-id="{{ section.courseID }}" {% if selected_section_id == section.secID %}selected{% endif %}>{{ section.prefix }} {{ section.code }} - {{ section.secNo }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <label>Assignment name<input name="name" placeholder="Assignment 1" required></label>
+          <label>Student
+            <select id="assignment-student-select" name="stu_id" required>
+              <option value="">Select student</option>
+              {% for student in section_students %}
+                <option value="{{ student.stuID }}" data-course-id="{{ student.courseID }}" data-section-id="{{ student.secID }}" {% if selected_student_id == student.stuID %}selected{% endif %}>{{ student.prefix }} {{ student.code }} - {{ student.secNo }} / {{ student.bannerID }}{% if student.studentName %} - {{ student.studentName }}{% endif %}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <label>Assignment questions<input type="file" name="assignment_file" accept=".pdf,.docx,.txt" required></label>
+          <label>Student submission<input type="file" name="submission_file" accept=".pdf,.docx,.txt" required></label>
+          <button type="submit">Save Assignment and Files</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+  function filterAssignmentChoices() {
+    const courseSelect = document.getElementById("assignment-course-select");
+    const sectionSelect = document.getElementById("assignment-section-select");
+    const studentSelect = document.getElementById("assignment-student-select");
+    if (!courseSelect || !sectionSelect || !studentSelect) {
+      return;
+    }
+
+    const selectedCourse = courseSelect.value;
+    let selectedSection = sectionSelect.value;
+
+    for (const option of sectionSelect.options) {
+      if (!option.value) {
+        option.hidden = false;
+        continue;
+      }
+      option.hidden = Boolean(selectedCourse) && option.dataset.courseId !== selectedCourse;
+      if (option.hidden && option.selected) {
+        sectionSelect.value = "";
+        selectedSection = "";
+      }
+    }
+
+    for (const option of studentSelect.options) {
+      if (!option.value) {
+        option.hidden = false;
+        continue;
+      }
+      const courseMatches = !selectedCourse || option.dataset.courseId === selectedCourse;
+      const sectionMatches = !selectedSection || option.dataset.sectionId === selectedSection;
+      option.hidden = !(courseMatches && sectionMatches);
+      if (option.hidden && option.selected) {
+        studentSelect.value = "";
+      }
+    }
+  }
+
+  function filterStudentSections() {
+    const courseSelect = document.getElementById("student-course-select");
+    const sectionSelect = document.getElementById("student-section-select");
+    if (!courseSelect || !sectionSelect) {
+      return;
+    }
+
+    const selectedCourse = courseSelect.value;
+    for (const option of sectionSelect.options) {
+      if (!option.value) {
+        option.hidden = false;
+        continue;
+      }
+      option.hidden = Boolean(selectedCourse) && option.dataset.courseId !== selectedCourse;
+      if (option.hidden && option.selected) {
+        sectionSelect.value = "";
+      }
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const courseSelect = document.getElementById("assignment-course-select");
+    const sectionSelect = document.getElementById("assignment-section-select");
+    const studentCourseSelect = document.getElementById("student-course-select");
+    const renameButtons = document.querySelectorAll(".rename-toggle");
+    if (courseSelect) {
+      courseSelect.addEventListener("change", filterAssignmentChoices);
+    }
+    if (sectionSelect) {
+      sectionSelect.addEventListener("change", filterAssignmentChoices);
+    }
+    if (studentCourseSelect) {
+      studentCourseSelect.addEventListener("change", filterStudentSections);
+    }
+    for (const button of renameButtons) {
+      button.addEventListener("click", () => {
+        const form = button.parentElement.querySelector(".rename-form");
+        if (form) {
+          form.classList.toggle("open");
+          const input = form.querySelector("input");
+          if (input && form.classList.contains("open")) {
+            input.focus();
+            input.select();
+          }
+        }
+      });
+    }
+    filterStudentSections();
+    filterAssignmentChoices();
+  });
+</script>
+</body>
+</html>

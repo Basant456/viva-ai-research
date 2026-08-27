@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Send Verification Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="page-header">
+    <div>
+        <div class="header-badge">Canvas Forwarding</div>
+        <h1>Send Quiz to Student</h1>
+        <p>
+            Download the student-facing verification quiz and forward it to the student through Canvas.
+        </p>
+    </div>
+</div>
+
+<div class="container">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="warning-box">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="card">
+        <h2>Student Quiz File</h2>
+        <p><strong>Course:</strong> {{ submission.course_name }}</p>
+        <p><strong>Student ID:</strong> {{ submission.student_name }}</p>
+        <p><strong>Assignment:</strong> {{ submission.assignment_name }}</p>
+        <p><strong>Quiz file:</strong> {{ quiz_filename }}</p>
+
+        <a href="{{ url_for('download_verification_quiz', submission_id=submission.id) }}" class="button-link">
+            Download Quiz File
+        </a>
+
+        <form method="POST" action="{{ url_for('send_quiz_canvas', submission_id=submission.id) }}" class="inline-form">
+            <button type="submit" class="canvas-button">
+                Send Quiz to Student via Canvas
+            </button>
+        </form>
+
+        <p class="helper-text">
+            This button is ready for the future Canvas API connection. Once Canvas API credentials are added, it can send the saved quiz file directly to the student.
+        </p>
+    </div>
+
+    <a href="{{ url_for('index') }}" class="button-link">Dashboard</a>
+    <a href="{{ url_for('review', submission_id=submission.id) }}" class="button-link">Back to Review</a>
+</div>
+
+</body>
+
+</html>

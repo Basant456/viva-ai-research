@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VIVA-AI Instructor MCQ Review</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f5f7;
+      color: #1f2933;
+    }
+    main { max-width: 860px; margin: 0 auto; padding: 28px 20px; }
+    .question {
+      background: #ffffff;
+      border: 1px solid #d8dee6;
+      border-radius: 8px;
+      padding: 18px;
+      margin-top: 16px;
+    }
+    h1, h2 { margin-top: 0; }
+    li { margin: 8px 0; line-height: 1.45; }
+    details {
+      margin-top: 12px;
+      background: #fbfcfd;
+      border: 1px solid #e1e7ef;
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+    a, button {
+      color: #0f5ca8;
+      font-weight: 700;
+      text-decoration: none;
+      font: inherit;
+    }
+    button, .button {
+      border: 0;
+      background: #0f5ca8;
+      color: #ffffff;
+      border-radius: 6px;
+      padding: 9px 12px;
+      cursor: pointer;
+      display: inline-flex;
+    }
+    .button.secondary, button.secondary { background: #38546b; }
+  </style>
+</head>
+<body>
+<main>
+  <p><a href="{{ url_for('review', submission_id=submission.submissionID) }}">Back to analysis</a></p>
+  <h1>Instructor MCQ Review</h1>
+  <p>{{ submission.prefix }} {{ submission.code }} / {{ submission.bannerID }}{% if submission.studentName %} - {{ submission.studentName }}{% endif %} / {{ submission.assignmentName }}</p>
+  <p>This local page is for instructors and includes the answer key. Student Preview hides answers until the student submits.</p>
+
+  <div class="actions">
+    <form method="post" action="{{ url_for('generate_mcq', submission_id=submission.submissionID) }}">
+      <button type="submit">Generate MCQs</button>
+    </form>
+    <a class="button secondary" href="{{ url_for('student_quiz', submission_id=submission.submissionID) }}">Student Preview</a>
+    <a class="button secondary" href="{{ url_for('download_canvas_mcq', submission_id=submission.submissionID) }}">Save Canvas-Compatible MCQ File</a>
+    <form method="post" action="{{ url_for('send_quiz_to_canvas', submission_id=submission.submissionID) }}">
+      <button type="submit">Send Quiz to Canvas</button>
+    </form>
+  </div>
+
+  {% if mcq.questions %}
+    {% for question in mcq.questions %}
+      <section class="question">
+        <h2>{{ loop.index }}. {{ question.question }}</h2>
+        <ol type="A">
+          {% for option in question.options %}
+            <li>{{ option }}</li>
+          {% endfor %}
+        </ol>
+        <details>
+          <summary>Show answer</summary>
+          <p><strong>Answer:</strong> {{ question.answer }}</p>
+          <p><strong>Explanation:</strong> {{ question.explanation or question.concept }}</p>
+          <p><strong>Concept:</strong> {{ question.concept }}</p>
+        </details>
+      </section>
+    {% endfor %}
+  {% else %}
+    <p>No MCQs have been generated for this submission yet. Use Generate MCQs to create conceptual verification questions for any submission.</p>
+  {% endif %}
+</main>
+</body>
+</html>
